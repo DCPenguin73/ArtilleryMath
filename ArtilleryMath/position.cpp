@@ -13,8 +13,8 @@
 
 Position::Position(double x, double y) : x(0.0), y(0.0)
 {
-   setMetersX(x);
-   setMetersY(y);
+	setMetersX(x);
+	setMetersY(y);
 }
 
 /******************************************
@@ -23,9 +23,9 @@ Position::Position(double x, double y) : x(0.0), y(0.0)
  *****************************************/
 Position& Position::operator = (const Position& pt)
 {
-   x = pt.x;
-   y = pt.y;
-   return *this;
+	x = pt.x;
+	y = pt.y;
+	return *this;
 }
 
 
@@ -35,22 +35,22 @@ Position& Position::operator = (const Position& pt)
  *****************************************/
 std::ostream& operator << (std::ostream& out, const Position& pt)
 {
-   out << "(" << pt.getMetersX() << "m , " << pt.getMetersY() << "m)";
-   return out;
+	out << "(" << pt.getMetersX() << "m , " << pt.getMetersY() << "m)";
+	return out;
 }
-   
+
 /*******************************************
 * POSITION extraction
 *       Prompt for coordinates
 ******************************************/
 std::istream& operator >> (std::istream& in, Position& pt)
 {
-   double x;
-   double y;
-   in >> x >> y;
+	double x;
+	double y;
+	in >> x >> y;
 
-   pt.setMetersX(x);
-   pt.setMetersY(y);
+	pt.setMetersX(x);
+	pt.setMetersY(y);
 
-   return in;
+	return in;
 }
