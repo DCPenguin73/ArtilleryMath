@@ -30,6 +30,16 @@ double Angle::normalize(double angleR) const {
 	}
 	return r;
 }
-
-
+double Angle::getDegrees() const {
+	return convertToDegrees(radians);
+};
+void Angle::setDegrees(double angleD) {
+	radians = normalize(convertToRadians(angleD));
+};
+double Angle::convertToDegrees(double radians) const{
+	return radians * (360 / TWO_PI);
+};
+double Angle::convertToRadians(double degrees) const {
+	return (degrees * TWO_PI) / 360;
+};
 

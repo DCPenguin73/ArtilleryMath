@@ -32,9 +32,12 @@ public:
 public:
 	double getRadians() const;
 	void setRadians(double angleR);
-
+	double getDegrees() const;
+	void setDegrees(double angleD);
 private:
 	double normalize(double angleR) const;
+	double convertToDegrees(double radians) const;
+	double convertToRadians(double degrees) const;
 };
 
 
