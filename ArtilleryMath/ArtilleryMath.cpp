@@ -22,7 +22,7 @@ using namespace std;
 #define WEIGHT        46.7   // Weight in KG
 #define GRAVITY     -9.8   // Vertical acceleration due to gravity, in m/s^2
 
-#define THRUST   827.000   // Thrust of main engine, in Newtons (kg m/s^2)
+#define THRUST   827.000   // Thrust of the initial bullet
 double PI = (2 * acos(0.0));
 
 /***************************************************
