@@ -14,6 +14,8 @@
 
 #include <iostream>  // for CIN and COUT
 #include <cmath>
+#include "angle.h"
+#include "position.h"
 using namespace std;
 
 
@@ -192,7 +194,7 @@ int main()
 {
     // Prompt for input and variables to be computed
 
-    double aDegrees = prompt("What is the angle of the howitzer where 0 is up (degrees)? ");
+    Angle aDegrees = prompt("What is the angle of the howitzer where 0 is up (degrees)? ");
 
 
 
