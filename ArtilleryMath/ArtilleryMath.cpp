@@ -18,10 +18,10 @@
 using namespace std;
 
 
-//#define WEIGHT   15103.000   // Weight in KG
-//#define GRAVITY     -1.625   // Vertical acceleration due to gravity, in m/s^2
+#define WEIGHT        46.7   // Weight in KG
+#define GRAVITY     -1.625   // Vertical acceleration due to gravity, in m/s^2
 
-//#define THRUST   45000.000   // Thrust of main engine, in Newtons (kg m/s^2)
+#define THRUST   827.000   // Thrust of main engine, in Newtons (kg m/s^2)
 double PI = (2 * acos(0.0));
 
 /***************************************************
@@ -194,10 +194,10 @@ int main()
     // Prompt for input and variables to be computed
     double dx = prompt("What is your horizontal velocity (m/s)? ");
     double dy = prompt("What is your vertical velocity (m/s)? ");
-    double y = prompt("What is your altitude (m)? ");
+    double y = 10;
 
     double aDegrees = prompt("What is the angle of the LM where 0 is up (degrees)? ");
-    double t = 1;
+    double t = .01;
     double x = 0;
     double aRadians = degreesToRadians(aDegrees);            // Angle in radians
     double accelerationThrust = computeAcceleration(THRUST, WEIGHT);  // Acceleration due to thrust 
