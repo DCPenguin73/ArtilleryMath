@@ -101,8 +101,8 @@ double computeVelocity(double v, double a, double t) {
  *     y : the vertical component of the total
  ***********************************************/
  // your function goes here
-double computeVertical(double a, double total) {
-    double y = cos(a) * total;
+double computeVertical(Angle a, double total) {
+    double y = cos(a.getRadians()) * total;
     return y;
 }
 
@@ -125,8 +125,8 @@ double computeVertical(double a, double total) {
  *     x : the vertical component of the total
  ***********************************************/
  // your function goes here
-double computeHorizontal(double a, double total) {
-    double x = sin(a) * total;
+double computeHorizontal(Angle a, double total) {
+    double x = sin(a.getRadians()) * total;
     return x;
 }
 
@@ -155,22 +155,6 @@ double computeTotal(double x, double y) {
     return total;
 }
 
-
-/*************************************************
- * RADIANS FROM DEGEES
- * Convert degrees to radians:
- *     radians / 2pi = degrees / 360
- * INPUT
- *     d : degrees from 0 to 360
- * OUTPUT
- *     r : radians from 0 to 2pi
- **************************************************/
-double degreesToRadians(double d) {
-    double r;
-    r = (PI * d) / 180;
-    return r;
-}
-
 /**************************************************
  * PROMPT
  * A generic function to prompt the user for a double
@@ -194,7 +178,8 @@ int main()
 {
     // Prompt for input and variables to be computed
 
-    Angle aDegrees = prompt("What is the angle of the howitzer where 0 is up (degrees)? ");
+    Angle aDegrees;
+
 
 
 
