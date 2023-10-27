@@ -2,14 +2,13 @@
  * 1. Name:
  *      team 7 Daniel & Cayden
  * 2. Assignment Name:
- *      Lab 02: Apollo 11
+ *      Lab 07: Artillery Math
  * 3. Assignment Description:
- *      Simulate the Apollo 11 landing
+ *      Simulate the Artillery Math
  * 4. What was the hardest part? Be as specific as possible.
- *      The hardest part was adding the while loop while still having a consistant time for the simulation.
- *      We ended up making a new variable called count to handle it.
+ *      
  * 5. How long did it take for you to complete the assignment?
- *      30 minutes after we finished the problems set assignment.
+ *      
  *****************************************************************/
 
 
