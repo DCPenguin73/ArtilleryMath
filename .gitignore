@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/GunMath/FileContentIndex
+/.vs/GunMath/v17
+/.vs
+/ArtlieryMath/.vs/ArtlieryMath/FileContentIndex
+/ArtlieryMath/.vs/ArtlieryMath/v17
+/ArtilleryMath/.vs/ArtilleryMath
+/ArtilleryMath/x64/Debug
