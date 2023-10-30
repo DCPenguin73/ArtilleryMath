@@ -16,6 +16,7 @@
 #include <math.h>
 #include "angle.h"
 #include "position.h"
+#include "Database.h"
 using namespace std;
 #define PI  (2 * acos(0.0));
 #define WEIGHT        46.7   // Weight in KG
@@ -27,63 +28,6 @@ using namespace std;
 
 
 
-
-struct Mapping {
-    double domain;
-    double range;
-};
-/*************************************
-linerinterpolation2
-******************************/
-inline double linerInterpolation(const Mapping & zero, const Mapping & one, double d) {
-    if (domain < mapping[0].domain)
-        return mapping[0].range;
-
-    for (int i = 0; i < numMapping - 1; i++) {
-        if (mapping[i + 0].domain <= domain && domain <= mapping[i + 1].domain)
-            return linerInterpolation(mapping[i + 0], mapping[i + 1], domain);
-    }
-    return mapping[numMapping - 1].range;
-}
-/*************************************
-linerinterpolation3
-******************************/
-inline double linerInterpolation(const Mapping mapping[], int numMapping, double domain) {
-    if (domain < mapping[0].domain)
-        return mapping[0].range;
-
-    for (int i = 0; i < numMapping - 1; i++) {
-        if (mapping[i + 0].domain <= domain && domain <= mapping[i + 1].domain)
-            return linerInterpolation(mapping[i + 0], mapping[i + 1], domain);
-    }
-    return mapping[numMapping - 1].range;
-}
-
-/************************************
-* gravity from altitude
-************************************/
-double gravityFromAltiude(double altitude){
-    const Mapping gravityMapping[] =
-    { // altitude   gravity
-       {0, 9.807},
-        { 1000,	9.804 },
-        { 2000,	9.801 },
-        { 3000,	9.797 },
-        { 4000,	9.794 },
-        { 5000,	9.791 },
-        { 6000,	9.788 },
-        { 7000,	9.785 },
-        { 8000,	9.782 },
-        { 9000,	9.779 },
-        { 10000,	9.776 },
-        { 15000,	9.761 },
-        { 20000,	9.745 },
-        { 25000,	9.730 }
-    };
-    
-    double gravity = linerInterpolation(gravityMapping, sizeof(gravityMapping) / sizeof(gravityMapping[0]), altitude);
-    return gravity;
-}
 
 /***************************************************
  * COMPUTE DISTANCE
@@ -259,6 +203,10 @@ double dragForce(double coefficient, double density, double velocity, double are
  ****************************************************************/
 int main()
 {
+    
+    double domain1[] = { 0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 15000, 20000, 25000};
+    double range1[] = { 9.807, 9.804, 9.801, 9.797, 9.794, 9.791, 9.788, 9.785, 9.782, 9.779, 9.776, 9.761, 9.745, 9.730 };
+    Database gravity = Database(domain1, range1, 14);
     Angle aDegrees(prompt("What is the angle of the howitzer where 0 is up? "));    // Prompt for angle
     double speed = THRUST;   // Total speed
     Position location = Position(0.0, 0.0); //Location of Bullet
@@ -272,7 +220,7 @@ int main()
     while (location.getMetersY() >= 0) {
         oldLocation = location;
         accelX = 0;
-        accelY = GRAVITY;
+        accelY = gravity.searchDatabase(location.getMetersY()) * -1;
         speedX = computeVelocity(speedX, accelX, TIME_INTERVAL);
         speedY = computeVelocity(speedY, accelY, TIME_INTERVAL);
         speed = computeTotal(speedX, speedY);
@@ -281,11 +229,11 @@ int main()
         aDegrees.setRadians(changeAngle(aDegrees.getRadians(), speedX, speedY));
         hangTime += TIME_INTERVAL;
     }
-    if (location.getMetersY() != 0) {
-        hangTime = linearInter(hangTime - TIME_INTERVAL, oldLocation.getMetersY(), hangTime, location.getMetersY(), 0);
-        location.setMetersX(linearInter(oldLocation.getMetersX(), oldLocation.getMetersY(), location.getMetersX(), location.getMetersY(), 0));
-        location.setMetersY(0.0);
-    }
+    //if (location.getMetersY() != 0) {
+    //    hangTime = linearInter(hangTime - TIME_INTERVAL, oldLocation.getMetersY(), hangTime, location.getMetersY(), 0);
+    //    location.setMetersX(linearInter(oldLocation.getMetersX(), oldLocation.getMetersY(), location.getMetersX(), location.getMetersY(), 0));
+    //    location.setMetersY(0.0);
+    //}
     cout << "Distance: " << location.getMetersX() << "m   Altitude: " << location.getMetersY() << "m    Hang Time: " << hangTime << "s" << endl;
     
     return 0;
