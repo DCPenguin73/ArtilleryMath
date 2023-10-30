@@ -35,7 +35,7 @@ struct Mapping {
 /*************************************
 linerinterpolation
 ******************************/
-double linerinterpolation(const Mapping mapping[], int numMapping, double domain) {
+double linerInterpolation(const Mapping mapping[], int numMapping, double domain) {
     if (domain < mapping[0].domain)
         return mapping[0].range;
 
@@ -66,7 +66,7 @@ double gravityFromAltiude(double altitude){
         { 25000,	9.730 }
     };
     
-    double gravity = linerInter(gravityMapping, sizeof(gravityMapping) / sizeof(gravityMapping[0]), altitude);
+    double gravity = linerInterpolation(gravityMapping, sizeof(gravityMapping) / sizeof(gravityMapping[0]), altitude);
     return gravity;
 }
 
