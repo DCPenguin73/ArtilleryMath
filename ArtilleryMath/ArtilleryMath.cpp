@@ -226,7 +226,7 @@ double changeAngle(double angle, double horX, double verY){
  * LINEAR INTERPOLATION
  * Take the coordinates of two points, and finds part the point in the middle
  ****************************************************************/
-double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, double pointX) {
+inline double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, double pointX) {
     return pos1Y + (pos2Y - pos1Y) * (pointX - pos1X) / (pos2X - pos1X);
 }
 
@@ -237,8 +237,6 @@ double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, doubl
 double dragForce(double coefficient, double density, double velocity, double area) {
     return .5 * coefficient * density * velocity * velocity * area;
 }
-
-
 
 /****************************************************************
  * MAIN
@@ -255,7 +253,9 @@ int main()
     double accelX = 0; //Horizontal Acceleration
     double accelY = 0; //Vertical Acceleration
     double hangTime = 0;
+    Position oldLocation = Position(0.0, 0.0);
     while (location.getMetersY() >= 0) {
+        oldLocation = location;
         accelX = 0;
         accelY = GRAVITY;
         speedX = computeVelocity(speedX, accelX, TIME_INTERVAL);
@@ -265,6 +265,11 @@ int main()
         location.setMetersY(computeDistance(location.getMetersY(), speedY, accelY, TIME_INTERVAL));
         aDegrees.setRadians(changeAngle(aDegrees.getRadians(), speedX, speedY));
         hangTime += TIME_INTERVAL;
+    }
+    if (location.getMetersY() != 0) {
+        hangTime = linearInter(hangTime - TIME_INTERVAL, oldLocation.getMetersY(), hangTime, location.getMetersY(), 0);
+        location.setMetersX(linearInter(oldLocation.getMetersX(), oldLocation.getMetersY(), location.getMetersX(), location.getMetersY(), 0));
+        location.setMetersY(0.0);
     }
     cout << "Distance: " << location.getMetersX() << "m   Altitude: " << location.getMetersY() << "m    Hang Time: " << hangTime << "s" << endl;
     
