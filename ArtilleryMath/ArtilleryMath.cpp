@@ -20,11 +20,53 @@ using namespace std;
 
 
 #define WEIGHT        46.7   // Weight in KG
-#define GRAVITY     -9.8   // Vertical acceleration due to gravity, in m/s^2
-
 #define THRUST   827.000 // Thrust of the initial bullet
 #define TIME_INTERVAL .01
 double PI = (2 * acos(0.0));
+
+
+
+struct Mapping {
+    double domain;
+    double range;
+};
+/*************************************
+linerinterpolation
+******************************/
+double linerinterpolation(const Mapping mapping[], int numMapping, double domain) {
+    if (domain < mapping[0].domain)
+        return mapping[0].range;
+
+    for (int i = 0; i < numMapping - 1; i++) {
+
+    }
+}
+
+/************************************
+* gravity from altitude
+************************************/
+double gravityFromAltiude(double altitude){
+    const Mapping gravityMapping[] =
+    { // altitude   gravity
+       {0, 9.807},
+        { 1000,	9.804 },
+        { 2000,	9.801 },
+        { 3000,	9.797 },
+        { 4000,	9.794 },
+        { 5000,	9.791 },
+        { 6000,	9.788 },
+        { 7000,	9.785 },
+        { 8000,	9.782 },
+        { 9000,	9.779 },
+        { 10000,	9.776 },
+        { 15000,	9.761 },
+        { 20000,	9.745 },
+        { 25000,	9.730 }
+    };
+    
+    double gravity = linerInter(gravityMapping, sizeof(gravityMapping) / sizeof(gravityMapping[0]), altitude);
+    return gravity;
+}
 
 /***************************************************
  * COMPUTE DISTANCE
