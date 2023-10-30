@@ -17,14 +17,13 @@
 #include "angle.h"
 #include "position.h"
 using namespace std;
-
-
+#define PI  (2 * acos(0.0));
 #define WEIGHT        46.7   // Weight in KG
 #define GRAVITY     -9.8   // Vertical acceleration due to gravity, in m/s^2
-
 #define THRUST   827.000 // Thrust of the initial bullet
 #define TIME_INTERVAL .01
-double PI = (2 * acos(0.0));
+#define SURFACE_AREA  (154.89/2)^2 * PI
+
 
 /***************************************************
  * COMPUTE DISTANCE
@@ -185,7 +184,10 @@ double changeAngle(double angle, double horX, double verY){
 double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, double pointX) {
     return pos1Y + (pos2Y - pos1Y) * (pointX - pos1X) / (pos2X - pos1X);
 }
-
+/****************************************************************
+ * DRAG FORCE EQUATION
+ * Figure out how much drag there is on the projectile
+ ****************************************************************/
 
 /****************************************************************
  * MAIN
