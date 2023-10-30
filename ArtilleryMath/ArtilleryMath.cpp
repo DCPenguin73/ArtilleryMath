@@ -33,15 +33,30 @@ struct Mapping {
     double range;
 };
 /*************************************
-linerinterpolation
+linerinterpolation2
 ******************************/
-double linerInterpolation(const Mapping mapping[], int numMapping, double domain) {
+inline double linerInterpolation(const Mapping & zero, const Mapping & one, double d) {
     if (domain < mapping[0].domain)
         return mapping[0].range;
 
     for (int i = 0; i < numMapping - 1; i++) {
-
+        if (mapping[i + 0].domain <= domain && domain <= mapping[i + 1].domain)
+            return linerInterpolation(mapping[i + 0], mapping[i + 1], domain);
     }
+    return mapping[numMapping - 1].range;
+}
+/*************************************
+linerinterpolation3
+******************************/
+inline double linerInterpolation(const Mapping mapping[], int numMapping, double domain) {
+    if (domain < mapping[0].domain)
+        return mapping[0].range;
+
+    for (int i = 0; i < numMapping - 1; i++) {
+        if (mapping[i + 0].domain <= domain && domain <= mapping[i + 1].domain)
+            return linerInterpolation(mapping[i + 0], mapping[i + 1], domain);
+    }
+    return mapping[numMapping - 1].range;
 }
 
 /************************************
