@@ -32,29 +32,30 @@ struct Mapping {
     double domain;
     double range;
 };
+/****************************************************************
+ * LINEAR INTERPOLATION
+ * Take the coordinates of two points, and finds part the point in the middle
+ ****************************************************************/
+inline double linearInterpolation(double pos1X, double pos1Y, double pos2X, double pos2Y, double pointX) {
+    return (pos1Y + (pos2Y - pos1Y) * (pointX - pos1X) / (pos2X - pos1X));
+}
 /*************************************
 linerinterpolation2
 ******************************/
-inline double linerInterpolation(const Mapping & zero, const Mapping & one, double d) {
-    if (domain < mapping[0].domain)
-        return mapping[0].range;
+inline double linearInterpolation(const Mapping & zero, const Mapping & one, double d) {
+    return linearInterpolation(zero.domain, zero.range, one.domain, one.range, d);
 
-    for (int i = 0; i < numMapping - 1; i++) {
-        if (mapping[i + 0].domain <= domain && domain <= mapping[i + 1].domain)
-            return linerInterpolation(mapping[i + 0], mapping[i + 1], domain);
-    }
-    return mapping[numMapping - 1].range;
 }
 /*************************************
 linerinterpolation3
 ******************************/
-inline double linerInterpolation(const Mapping mapping[], int numMapping, double domain) {
+double linearInterpolation(const Mapping mapping[], int numMapping, double domain) {
     if (domain < mapping[0].domain)
         return mapping[0].range;
 
     for (int i = 0; i < numMapping - 1; i++) {
         if (mapping[i + 0].domain <= domain && domain <= mapping[i + 1].domain)
-            return linerInterpolation(mapping[i + 0], mapping[i + 1], domain);
+            return linearInterpolation(mapping[i + 0], mapping[i + 1], domain);
     }
     return mapping[numMapping - 1].range;
 }
@@ -81,7 +82,7 @@ double gravityFromAltiude(double altitude){
         { 25000,	9.730 }
     };
     
-    double gravity = linerInterpolation(gravityMapping, sizeof(gravityMapping) / sizeof(gravityMapping[0]), altitude);
+    double gravity = linearInterpolation(gravityMapping, sizeof(gravityMapping) / sizeof(gravityMapping[0]), altitude);
     return gravity;
 }
 
@@ -235,14 +236,6 @@ double prompt(string message) {
  ****************************************************************/
 double changeAngle(double angle, double horX, double verY){
     return angle * tan(horX)* tan(verY);
-}
-
-/****************************************************************
- * LINEAR INTERPOLATION
- * Take the coordinates of two points, and finds part the point in the middle
- ****************************************************************/
-double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, double pointX) {
-    return pos1Y + (pos2Y - pos1Y) * (pointX - pos1X) / (pos2X - pos1X);
 }
 
 /****************************************************************
