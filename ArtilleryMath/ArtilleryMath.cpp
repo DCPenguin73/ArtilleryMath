@@ -182,14 +182,6 @@ double changeAngle(double angle, double horX, double verY){
 }
 
 /****************************************************************
- * LINEAR INTERPOLATION
- * Take the coordinates of two points, and finds part the point in the middle
- ****************************************************************/
-inline double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, double pointX) {
-    return pos1Y + (pos2Y - pos1Y) * (pointX - pos1X) / (pos2X - pos1X);
-}
-
-/****************************************************************
  * DRAG FORCE EQUATION
  * Figure out how much drag there is on the projectile
  ****************************************************************/
