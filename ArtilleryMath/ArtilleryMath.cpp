@@ -229,6 +229,7 @@ double changeAngle(double angle, double horX, double verY){
 double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, double pointX) {
     return pos1Y + (pos2Y - pos1Y) * (pointX - pos1X) / (pos2X - pos1X);
 }
+
 /****************************************************************
  * DRAG FORCE EQUATION
  * Figure out how much drag there is on the projectile
@@ -236,6 +237,9 @@ double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, doubl
 double dragForce(double coefficient, double density, double velocity, double area) {
     return .5 * coefficient * density * velocity * velocity * area;
 }
+
+
+
 /****************************************************************
  * MAIN
  * Prompt for input, compute new position, and display output
