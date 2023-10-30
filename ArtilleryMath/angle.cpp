@@ -18,7 +18,7 @@ double Angle::getRadians() const {
 	return radians;
 }
 void Angle::setRadians(double angleR) {
-	radians = normalize(angleR);
+	radians = angleR;
 }
 double Angle::normalize(double angleR) const {
 	double r = angleR;
@@ -34,7 +34,7 @@ double Angle::getDegrees() const {
 	return convertToDegrees(radians);
 };
 void Angle::setDegrees(double angleD) {
-	radians = convertToRadians(normalize(angleD));
+	radians = convertToRadians(angleD);
 };
 double Angle::convertToDegrees(double radians) const{
 	return radians * (360 / TWO_PI);
