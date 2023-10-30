@@ -25,9 +25,9 @@ public:
 	{
 		radians = copier.radians;
 	}
-	Angle(double inputRad)
+	Angle(double inputDeg)
 	{
-		radians = inputRad;
+		radians = convertToRadians(inputDeg);
 	}
 public:
 	double getRadians() const;

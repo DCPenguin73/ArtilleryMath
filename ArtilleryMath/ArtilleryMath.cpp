@@ -13,7 +13,7 @@
 
 
 #include <iostream>  // for CIN and COUT
-#include <cmath>
+#include <math.h>
 #include "angle.h"
 #include "position.h"
 using namespace std;
@@ -22,7 +22,8 @@ using namespace std;
 #define WEIGHT        46.7   // Weight in KG
 #define GRAVITY     -9.8   // Vertical acceleration due to gravity, in m/s^2
 
-#define THRUST   827.000   // Thrust of the initial bullet
+#define THRUST   827.000 // Thrust of the initial bullet
+#define TIME_INTERVAL 1
 double PI = (2 * acos(0.0));
 
 /***************************************************
@@ -169,6 +170,21 @@ double prompt(string message) {
     cin >> response;
     return response;
 }
+/****************************************************************
+ * ANGLE FROM COMPONENTS
+ * Get the new angle from the old angle and the horizonal and vertical speed
+ ****************************************************************/
+double changeAngle(double angle, double horX, double verY){
+    return angle * tan(horX)* tan(verY);
+}
+
+/****************************************************************
+ * LINEAR INTERPOLATION
+ * Take the coordinates of two points, and finds part the point in the middle
+ ****************************************************************/
+double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, double pointX) {
+    return pos1Y + (pos2Y - pos1Y) * (pointX - pos1X) / (pos2X - pos1X);
+}
 
 /****************************************************************
  * MAIN
@@ -176,12 +192,22 @@ double prompt(string message) {
  ****************************************************************/
 int main()
 {
-    // Prompt for input and variables to be computed
-
-    Angle aDegrees;
-
-
-
-
+    Angle aDegrees(prompt("What is the angle of the howitzer where 0 is up? "));    // Prompt for angle
+    double speed = 827;   // Total speed
+    Position location = Position(0.0, 0.0); //Location of Bullet
+    double speedX = computeHorizontal(aDegrees.getRadians(), speed); //Horizontal Speed
+    double speedY = computeVertical(aDegrees.getRadians(), speed);   //Vertical Speed
+    double accelX = 0; //Horizontal Acceleration
+    double accelY = 0; //Vertical Acceleration
+    for (int i = 0; i < 20; i++) {
+        //Acceleration Calculations here
+        speedX = computeVelocity(speedX, accelX, TIME_INTERVAL);
+        speedY = computeVelocity(speedY, accelY, TIME_INTERVAL);
+        speed = computeTotal(speedX, speedY);
+        location.setMetersX(computeDistance(location.getMetersX(), speedX, accelX, TIME_INTERVAL));
+        location.setMetersY(computeDistance(location.getMetersY(), speedY, accelY, TIME_INTERVAL));
+        aDegrees.setRadians(changeAngle(aDegrees.getRadians(), speedX, speedY));
+    }
+    cout << "Distance: " << location.getMetersX() << "m   Altitude: " << location.getMetersY() << "m";
     return 0;
 }
