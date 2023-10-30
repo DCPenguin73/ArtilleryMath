@@ -206,8 +206,9 @@ int main()
         speed = computeTotal(speedX, speedY);
         location.setMetersX(computeDistance(location.getMetersX(), speedX, accelX, TIME_INTERVAL));
         location.setMetersY(computeDistance(location.getMetersY(), speedY, accelY, TIME_INTERVAL));
-        aDegrees.setRadians(changeAngle(aDegrees.getRadians(), speedX, speedY));
+        /*aDegrees.setRadians(changeAngle(aDegrees.getRadians(), speedX, speedY));*/
+        cout << "Distance: " << location.getMetersX() << "m   Altitude: " << location.getMetersY() << "m";
     }
-    cout << "Distance: " << location.getMetersX() << "m   Altitude: " << location.getMetersY() << "m";
+    
     return 0;
 }
