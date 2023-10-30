@@ -186,6 +186,7 @@ double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, doubl
     return pos1Y + (pos2Y - pos1Y) * (pointX - pos1X) / (pos2X - pos1X);
 }
 
+
 /****************************************************************
  * MAIN
  * Prompt for input, compute new position, and display output
@@ -193,7 +194,7 @@ double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, doubl
 int main()
 {
     Angle aDegrees(prompt("What is the angle of the howitzer where 0 is up? "));    // Prompt for angle
-    double speed = 827;   // Total speed
+    double speed = THRUST;   // Total speed
     Position location = Position(0.0, 0.0); //Location of Bullet
     double speedX = computeHorizontal(aDegrees, speed); //Horizontal Speed
     double speedY = computeVertical(aDegrees, speed);
