@@ -24,7 +24,7 @@ using namespace std;
 
 #define THRUST   827.000 // Thrust of the initial bullet
 #define TIME_INTERVAL .01
-#define SURFACE_AREA  (154.89/2)^2 * PI
+
 
 
 
@@ -177,8 +177,8 @@ double prompt(string message) {
  * ANGLE FROM COMPONENTS
  * Get the new angle from the old angle and the horizonal and vertical speed
  ****************************************************************/
-double changeAngle(double angle, double horX, double verY){
-    return angle * tan(horX)* tan(verY);
+double changeAngle(double horX, double verY){
+    return atan2(horX, verY);
 }
 
 /****************************************************************
@@ -186,7 +186,13 @@ double changeAngle(double angle, double horX, double verY){
  * Figure out how much drag there is on the projectile
  ****************************************************************/
 double dragForce(double coefficient, double density, double velocity, double area) {
-    return .5 * coefficient * density * velocity * velocity * area;
+    if (velocity > 0){
+        return .5 * coefficient * density * velocity * velocity * area * -1;
+    }
+    else {
+        return .5 * coefficient * density * velocity * velocity * area;
+    }
+    
 }
 
 /****************************************************************
@@ -195,7 +201,7 @@ double dragForce(double coefficient, double density, double velocity, double are
  ****************************************************************/
 int main()
 {
-    
+    double surface_area = (154.89 / 2000) * (154.89 / 2000)  * PI;
     double domain1[] = { 0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 15000, 20000, 25000};
     double range1[] = { 9.807, 9.804, 9.801, 9.797, 9.794, 9.791, 9.788, 9.785, 9.782, 9.779, 9.776, 9.761, 9.745, 9.730 };
     Database gravity = Database(domain1, range1, 14);
@@ -205,20 +211,26 @@ int main()
     double speedX = computeHorizontal(aDegrees, speed); //Horizontal Speed
     double speedY = computeVertical(aDegrees, speed);
     //Vertical Speed
+    double drag; //total drag
+    double dragX; //x drag
+    double dragY; //y drag
     double accelX = 0; //Horizontal Acceleration
     double accelY = 0; //Vertical Acceleration
     double hangTime = 0;
     Position oldLocation = Position(0.0, 0.0);
     while (location.getMetersY() >= 0) {
         oldLocation = location;
-        accelX = 0;
-        accelY = gravity.searchDatabase(location.getMetersY()) * -1;
+        aDegrees.setRadians(changeAngle(speedX, speedY));
+        drag = dragForce(0.3, 0.6, speed, surface_area) / WEIGHT;
+        dragX = computeHorizontal(aDegrees, drag);
+        dragY = computeVertical(aDegrees, drag);
+        accelX = dragX;
+        accelY = (gravity.searchDatabase(location.getMetersY()) * -1) + dragY;
         speedX = computeVelocity(speedX, accelX, TIME_INTERVAL);
         speedY = computeVelocity(speedY, accelY, TIME_INTERVAL);
-        speed = computeTotal(speedX, speedY);
         location.setMetersX(computeDistance(location.getMetersX(), speedX, accelX, TIME_INTERVAL));
         location.setMetersY(computeDistance(location.getMetersY(), speedY, accelY, TIME_INTERVAL));
-        aDegrees.setRadians(changeAngle(aDegrees.getRadians(), speedX, speedY));
+        speed = computeTotal(speedX, speedY);
         hangTime += TIME_INTERVAL;
     }
     //if (location.getMetersY() != 0) {

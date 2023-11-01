@@ -20,11 +20,8 @@ inline double Database::linearInter(double pos1X, double pos1Y, double pos2X, do
 
 double Database::searchDatabase(double pointX) {
     for (int i = 1; i < length; i++) {
-        if (pointX > domain[i]) {
-            return linearInter(domain[i], range[i], domain[i+1], range[i+1], pointX);
-        }
-        else if (pointX = domain[i]) {
-            return range[i];
+        if (pointX < domain[i]) {
+            return linearInter(domain[i-1], range[i-1], domain[i], range[i], pointX);
         }
     }
 };
