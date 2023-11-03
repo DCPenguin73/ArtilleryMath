@@ -194,6 +194,13 @@ double dragForce(double coefficient, double density, double velocity, double are
     }
     
 }
+/****************************************************************
+ * LINEAR INTERPOLATION
+ * Take the coordinates of two points, and finds part the point in the middle
+ ****************************************************************/
+inline double linearInter(double pos1X, double pos1Y, double pos2X, double pos2Y, double pointX) {
+    return pos1Y + (pos2Y - pos1Y) * (pointX - pos1X) / (pos2X - pos1X);
+}
 
 /****************************************************************
  * MAIN
@@ -215,8 +222,8 @@ int main()
     double range3[] = { 340, 336, 332, 328, 324, 320, 316, 312, 308, 303, 299, 295, 295, 295, 305, 324 };
     Database speedSound = Database(domain3, range3, 16);
 
-    double domain4[] = { 0.300, 0.500, 0.700, 0.890, 0.920, 0.960, 0.980, 1.000, 1.020, 1.060, 1.240, 1.530, 1.990, 2.870, 2.890, 5.000 };
-    double range4[] = { 0.1629, 0.1659, 0.2031, 0.2597, 0.3010, 0.3287, 0.4002, 0.4258, 0.4335, 0.4483, 0.4064, 0.3663, 0.2897, 0.2297, 0.2306, 0.2656};
+    double domain4[] = {0.300, 0.500, 0.700, 0.890, 0.920, 0.960, 0.980, 1.000, 1.020, 1.060, 1.240, 1.530, 1.990, 2.870, 2.890, 5.000 };
+    double range4[] = {0.1629, 0.1659, 0.2031, 0.2597, 0.3010, 0.3287, 0.4002, 0.4258, 0.4335, 0.4483, 0.4064, 0.3663, 0.2897, 0.2297, 0.2306, 0.2656};
     Database dragCoef = Database(domain4, range4, 16);
 
         
@@ -235,11 +242,13 @@ int main()
     double accelX = 0; //Horizontal Acceleration
     double accelY = 0; //Vertical Acceleration
     double hangTime = 0;
+    double mach = 0;
     Position oldLocation = Position(0.0, 0.0);
     while (location.getMetersY() >= 0) {
         oldLocation = location;
         aDegrees.setRadians(changeAngle(speedX, speedY));
-        drag = dragForce(0.3, 0.6, speed, surface_area) / WEIGHT;
+        mach = speed / speedSound.searchDatabase(location.getMetersY());
+        drag = dragForce(dragCoef.searchDatabase(mach), airDensity.searchDatabase(location.getMetersY()), speed, surface_area) / WEIGHT;
         dragX = computeHorizontal(aDegrees, drag);
         dragY = computeVertical(aDegrees, drag);
         accelX = dragX;
@@ -251,12 +260,15 @@ int main()
         speed = computeTotal(speedX, speedY);
         hangTime += TIME_INTERVAL;
     }
-    //if (location.getMetersY() != 0) {
-    //    hangTime = linearInter(hangTime - TIME_INTERVAL, oldLocation.getMetersY(), hangTime, location.getMetersY(), 0);
-    //    location.setMetersX(linearInter(oldLocation.getMetersX(), oldLocation.getMetersY(), location.getMetersX(), location.getMetersY(), 0));
-    //    location.setMetersY(0.0);
-    //}
-    cout << "Distance: " << location.getMetersX() << "m   Altitude: " << location.getMetersY() << "m    Hang Time: " << hangTime << "s" << endl;
+    if (location.getMetersY() != 0) {
+        hangTime = linearInter(oldLocation.getMetersY(), hangTime - TIME_INTERVAL, location.getMetersY(), hangTime, 0);
+        location.setMetersX(linearInter(oldLocation.getMetersY(), oldLocation.getMetersX(), location.getMetersY(), location.getMetersX(), 0));
+        location.setMetersY(0.0);
+    }
+    cout.setf(ios::fixed);
+    cout.setf(ios::showpoint);
+    cout.precision(1);
+    cout << "Distance: " << location.getMetersX() << "m  Hang Time: " << hangTime << "s" << endl;
     
     return 0;
 }

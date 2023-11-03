@@ -8,10 +8,10 @@ public:
 public:
 	Database(double aDomain[], double aRange[], int aLength)
 	{
-		for (int i = 0; i < sizeof(aDomain)-1; i++) {
+		for (int i = 0; i < aLength; i++) {
 			domain[i] = aDomain[i];
 		}
-		for (int i = 0; i < sizeof(aRange)-1; i++) {
+		for (int i = 0; i < aLength; i++) {
 			range[i] = aRange[i];
 		}
 		length = aLength;
