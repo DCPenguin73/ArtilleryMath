@@ -42,7 +42,5 @@ double Angle::convertToDegrees(double radians) const{
 double Angle::convertToRadians(double degrees) const {
 	return normalize((degrees * TWO_PI) / 360);
 };
-double Angle::getOppositeRadians() const {
-	return normalize(radians + (TWO_PI / 2));
-}
+
 

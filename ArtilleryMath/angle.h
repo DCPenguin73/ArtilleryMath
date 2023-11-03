@@ -34,7 +34,6 @@ public:
 	void setRadians(double angleR);
 	double getDegrees() const;
 	void setDegrees(double angleD);
-	double getOppositeRadians() const;
 private:
 	double normalize(double angleR) const;
 	double convertToDegrees(double radians) const;
